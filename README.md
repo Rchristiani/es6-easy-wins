@@ -1,5 +1,6 @@
 #Talk layout
 
+Layout for a potential talk/blog post.
 
 - let
 ```
