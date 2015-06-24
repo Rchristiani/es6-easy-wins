@@ -210,7 +210,7 @@ Fighter.prototype = new Warrior();
 ```
 
 ###Private properties in classes
-You might be thinking to your self, well we have the `class` what about private properties? In ES6 there is a new data type called a `symbol`. To make a new symbol we would create it as such.
+You might be thinking to yourself, well we have the `class` what about private properties? In ES6 there is a new data type called a `symbol`. To make a new symbol we would create it as such.
 
 ```
 var mySymbol = Symbol();
@@ -265,7 +265,7 @@ I do want to go over the lexical scoping of `this` however. When working with fu
 var teacher = {
     name: "Ryan",
     location: "Toronto, ON",
-    courses: ['Front End bootcamp', 'Intro We Development', 'Advanced Web Development'],
+    courses: ['Front End Bootcamp', 'Intro Web Development', 'Advanced Web Development'],
     print: function(){
         this.courses.forEach(function(course,index) {
             console.log(`${this.name} teaches ${course}`)
@@ -273,8 +273,8 @@ var teacher = {
     }
 }
 teacher.print();
-//teaches Front End bootcamp
-//teaches Intro We Development
+//teaches Front End Bootcamp
+//teaches Intro Web Development
 //teaches Advanced Web Development
 
 ```
@@ -284,7 +284,7 @@ In the example above the `this` keyword is scoped to the object we are working o
 var teacher = {
     name: "Ryan",
     location: "Toronto, ON",
-    courses: ['Front End bootcamp', 'Intro We Development', 'Advanced Web Development'],
+    courses: ['Front End Bootcamp', 'Intro Web Development', 'Advanced Web Development'],
     print: function() {
         this.courses.forEach((course,index) => {
             console.log(`${this.name} teaches ${course}`)
@@ -292,8 +292,8 @@ var teacher = {
     }
 }
 teacher.print();
-//Ryan teaches Front End bootcamp
-//Ryan teaches Intro We Development
+//Ryan teaches Front End Bootcamp
+//Ryan teaches Intro Web Development
 //Ryan teaches Advanced Web Development
 
 ```
