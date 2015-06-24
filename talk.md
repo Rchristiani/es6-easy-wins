@@ -13,7 +13,7 @@ Some of the things thing we will go over are:
 - Promises
 
 ##Lets talk about `let`
-In JS currently we have function scope. Meaning if a variable is created in a function using the `var` keyword it is bound to that function. It is not available outside of that function. It is however available inside of any functions created inside of the original function in which it was created via a closure.
+In JS currently we have function scope. Meaning if a variable is created in a function using the `var` keyword it is bound to that function. It is not available outside of that function. It is available inside of the function it was created in, and any functions created inside of that. 
 
 In some other languages there is also this idea of block scope. Meaning anything declared between the `{}` characters, or a block, would only be scoped to that block. So we can have scopes that are not function dependent.
 
@@ -38,7 +38,7 @@ for(let i = 0; i < 15; i++) {
 console.log('After:', i);
 ```
 
-Use the `let` keyword instead and trying to `console.log(i)` outside of the `for` loop will now give you an `undefined`. This will work in any block statement, so anything in between `{}`. This includes inside of closures.
+Use the `let` keyword instead and try to `console.log(i)` outside of the `for` loop will now give you an `undefined`. This will work in any block statement, so anything in between `{}`. This includes inside of closures.
 
 ```
 function myFunction() {
@@ -131,7 +131,7 @@ console.log(string);
 ##Classes
 In most programming languages there is this idea of a Class. A class is some structure that is used as a blue print for creating an object oriented structure.
 
-Before classes in ES6 there were a couple ways to create this structure. One was would be using a function as a constructor.
+Before classes in ES6 there were a couple ways to create this structure. One way would be using a function as a constructor.
 
 ```
 var Warrior = function() {
