@@ -1,6 +1,6 @@
 #ES6/ES2015 Easy Wins.
 
-The newest iteration of the Javascript language is just around the corner. As of June 2015 the spec for ES6/ES2015 is has been [approved](http://www.infoq.com/news/2015/06/ecmascript-2015-es6). Because of that there will be a lot of new features and syntax coming to a browser near you!
+The newest iteration of the Javascript language is just around the corner. As of June 2015 the spec for ES6/ES2015 has been [approved](http://www.infoq.com/news/2015/06/ecmascript-2015-es6). Because of that there will be a lot of new features and syntax coming to a browser near you!
 
 Lets break down some of the Easy Wins from the new version. When I say Easy Wins I mean things that do not require a large amount of research to start working with. For example we will not be talking about Generators or Symbols, I think those require a more in depth post. 
 
@@ -307,7 +307,9 @@ var gob = new Europe();
 gob.finalCountdown();
 ```
 
-Maybe we have a class called `Europe` and we want to play and intro or something...The one problem here is that when you write `setInterval(function(){...});` the `this` keyword is scoped to the window. Or the global scope. 
+Maybe we have a class called `Europe` and we want to play an intro or something...The one problem here is that when you write `setInterval(function(){...});` the `this` keyword is scoped to the window. Or the global scope. So the above will print out `NaN`.
+
+However if we change the callback function inside of the `setInterval` call to be an arrow function, the scope of the function will be that in which it was created, therefore the `Europe` class.
 
 ```
 class Europe {
@@ -325,37 +327,97 @@ class Europe {
   }
 }
 ```
+This will now print from 1000 to 0!
 
 
 ##Promises 
-In ES6 we get Promises! 
+In ES6 we get native Promises! A Promise is the eventual success or failure of some action. They are typically used for things like Ajax requests or animations. The idea of a Promise is not new, they have been around for a while. In jQuery we have the `$.Deferred()` object that allows us to emulate the behaviours of a Promise, there are other popular libraries like Q that implemented Promises as well.
+
+A Promise can have one of four states, *pending*, *fulfilled*, *rejected*, or *settled*. We will be looking at the *fulfilled* and *rejected* states. 
+
+To create a Promise we use the `new` keyword and the `Promise` constructor. This takes a callback function that accepts two arguments, `resolve` and `reject`. 
 
 ```
 var myPromise = new Promise(function(resolve,reject) {
-		
+	//...	
 });
 
 ```
+These will be used to determine weather our Promise is *fulfilled*(resolved), or *rejected*(reject). `resolve` and `reject` are actually functions that we can use to pass some data along with.
+
+```
+var myPromise = new Promise(function(resolve,reject) {
+	//do a bunch of stuff
+	if(something is true) {
+		resolve('Everything worked');
+	}	
+	else {
+		resolve('Something went wrong');
+	}
+
+});
+
+```
+Now that we are either going to *fulfill* our promise or *reject* it, we need to do something with this eventual action. Enter the `.then()` method, this is a method on the `Promise` object we created, it takes two callback functions, the first will be called if the promise is fulfilled, the second will be called if the promise is rejected.
 
 ```
 myPromise.then(
 	//resolved
-	function() {
-	
+	function(message) {
+		//Will only be called if it is fulfilled
+		console.log(message)
 	}, 
 	//rejected
-	function() {
-
+	function(message) {
+		//Will only be called if it is rejected
+		console.log(message)
 	}
 );
 
 ```
 
+Something to note is that once a promises state has been set, it can not me altered. 
+
+What about a situation where you have multiple promises that you need to wait on. There is a method called `.all()` that can be used to wait until a certain number of promises have resolved. For example:
+
+```
+var promise1 = new Promise(...);
+var promise2 = new Promise(...);
+
+Promise.all([promise1,promise2]).then(data => {
+	data.forEach((item) => {
+		console.log(item);
+	});
+});
+```
+
+The `.all()` method will take an array of promises and called the `.them()` method only once they have all been resolved. If one of the passed promises is rejected, the `.all()` method will reject them all.
+
 
 ##Using ES6 in your projects today.
-In order to use ES6 in your projects now the safest way to do so is to build it with something like Babel
+This is great and all, but how can you use this today? In order to use ES6 in your projects now, the safest way to do so is to build it with something like Babel or Traceur. These are transpilers, that take your es6 code and convert it to be es5. 
 
-https://kangax.github.io/compat-table/es6/ 
 ###gulp-babel
-https://www.npmjs.com/package/gulp-babel
+A simple set up would be to use `gulp` and the `gulp-babel` [package](https://www.npmjs.com/package/gulp-babel).
+
+```
+var gulp = require('gulp');
+var babel = require('gulp-babel');
+var concat = require('gulp-concat');
+
+gulp.task('js', function() {
+	gulp.src('*.esnext.js')
+		.pipe(babel())
+		.pipe(concat('script.js'))
+		.pipe(gulp.dest('.'));
+});
+
+gulp.task('default', function() {
+	gulp.watch('*.esnext.js',['js']);
+});
+
+```
+
+Want to just try it out in the browser today? I suggest [ScratchJS](https://github.com/richgilbank/Scratch-JS) from Rich Gilbank at Shopify. It is a simple chrome extension that lets you write in the repl and play with the features in the browser.
+
 

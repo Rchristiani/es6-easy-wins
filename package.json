@@ -1,0 +1,24 @@
+{
+  "name": "es6-easy-wins",
+  "version": "1.0.0",
+  "description": "Gulp Babel example",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rchristiani/es6-easy-wins.git"
+  },
+  "author": "Ryan Christiani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rchristiani/es6-easy-wins/issues"
+  },
+  "homepage": "https://github.com/Rchristiani/es6-easy-wins#readme",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-concat": "^2.6.0"
+  }
+}
