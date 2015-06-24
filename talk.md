@@ -2,7 +2,7 @@
 
 The newest iteration of the Javascript language is just around the corner. As of June 2015 the spec for ES6/ES2015 has been [approved](http://www.infoq.com/news/2015/06/ecmascript-2015-es6). Because of that there will be a lot of new features and syntax coming to a browser near you!
 
-Lets break down some of the Easy Wins from the new version. When I say Easy Wins I mean things that do not require a large amount of research to start working with. For example we will not be talking about Generators or Symbols, I think those require a more in depth post. 
+Lets break down some of the Easy Wins from the new version. When I say Easy Wins I mean things that do not require a large amount of research to start working with. For example we will not be talking about Generators or Spread Parameters, I think those require a more in depth post. 
 
 Some of the things thing we will go over are: 
 - `let`
@@ -15,7 +15,7 @@ Some of the things thing we will go over are:
 ##Lets talk about `let`
 In JS currently we have function scope. Meaning if a variable is created in a function using the `var` keyword it is bound to that function. It is not available outside of that function. It is however available inside of any functions created inside of the original function in which it was created via a closure.
 
-In some other languages there is also this idea of block scope. Meaning anything declared between the `{}` characters, or a block, would only be scoped to that block.
+In some other languages there is also this idea of block scope. Meaning anything declared between the `{}` characters, or a block, would only be scoped to that block. So we can have scopes that are not function dependent.
 
 In JS it is common to write a `for` loop like such:
 
@@ -49,8 +49,16 @@ function myFunction() {
 }
 ```
 
-Calling `myFunction();` will return to you `"Hey"`.
+Calling `myFunction();` will return to you `"Hey"`. Or maybe inside of an `if` statement.
 
+```
+if(true) {
+	let name = 'Ryan';
+}
+console.log(name);
+```
+
+In this case the `name` variable is bound just to the `if` statements scope.
 
 ##Const
 Currently inside JS we are not able to create any variables that can not be changed, or that are immutable. We have a convention where a variable that is in ALL CAPS is supposed to be a value that should not be altered. This should be a constant variable.
@@ -78,7 +86,7 @@ function apiCall() {
 
 This is a pretty trivial example, but hopefully the idea comes across.
 
-##Template Strings or String interpolation
+##Template Strings and String Interpolation
 Dislike concatenating strings together? In ES6 we can now use template strings. The syntax is very straight forward, instead of using quotes `''` and the `+`, you use the `` ` `` characters. Also known as a back tick. Typing something like `` `Hey there` `` will just create a string that says "Hey there".
 
 You might be thinking, "Oh cool...but what about the + portion". There is a new syntax that looks like this `${variable}` that we can use in place of the verbose concatenation syntax. Consider this, if we have a variable `let name = "Ryan"` and we want to concatenate it into a string it might look like this:
@@ -123,7 +131,7 @@ console.log(string);
 ##Classes
 In most programming languages there is this idea of a Class. A class is some structure that is used as a blue print for creating an object oriented structure.
 
-Before classes in ES6 there were a couple ways to get up a this structure. One was would be using a function as a constructor.
+Before classes in ES6 there were a couple ways to create this structure. One was would be using a function as a constructor.
 
 ```
 var Warrior = function() {
@@ -136,9 +144,9 @@ var Warrior = function() {
 var character = new Warrior();
 character.attack(enemy);
 ```
-Here we use a function and the `this` keyword to apply properties to it. However by default inside this function the `this` keyword will be bound to the `window` object. In order to get to be bound to our `Warrior` we need to use the `new` keyword when we create it. In this case we are instantiating a new object. 
+Here we use a function and the `this` keyword to apply properties to it. However by default inside this function the `this` keyword will be bound to the `window` object. In order to get it be bound to our `Warrior` we need to use the `new` keyword when we create it. In this case we are instantiating a new copy of this object. 
 
-If you want to use our Warrior as the base object to create more from, we have to use the `prototype` property.
+If you want to use our `Warrior` as the base object to create more objects from, we have to use the `prototype` property.
 
 ```
 var Fighter = function() {
@@ -148,9 +156,9 @@ Fighter.prototype = new Warrior();
 
 var myFighter = new Fighter();
 ```
-Here we use the `prototype` property on our `Fighter` to make it inherit the properties from the `Warrior` object. So our `Fighter` has access to properties like the method `.attack()`;
+Here we use the `prototype` property on our `Fighter` to make it inherit the properties from the `Warrior` object. So our `Fighter` has access to properties like the method `.attack()` but also has it's own features, like `weapons`.
 
-Now lets look at the new Class type in ES6. For this new keyword has been introduced, `class`.
+Now lets look at the new Class type in ES6, a new keyword has been introduced, `class`.
 
 ```
 class Warrior {
@@ -166,7 +174,7 @@ var character = new Warrior();
 character.attack(enemy);
 ```
 
-In the class there is a method called `constructor()` that is run once you instantiate a new version of the Class. Inside here you can run any sort of initialization code that you need. If you need your `class` to accept parameters they are assigned in the in the `constructor()` method.
+In the class there is a method called `constructor()` that is run once you instantiate a new version of the Class. Inside here you can run any sort of initialization code that you need. If you need your `class` to accept parameters they are assigned in the `constructor()` method.
 
 ```
 class Warrior {
@@ -208,7 +216,7 @@ You might be thinking to your self, well we have the `class` what about private 
 var mySymbol = Symbol();
 ```
 
-Notice the lack of the `new` keyword. This will create a new symbol for us to use. Because this is a unique identifier we can use this to set private properties on our class.
+Notice the lack of the `new` keyword. This will create a new symbol for us to use. A Symbol is a unique identifier, because of this we can use this to set private properties on our class. No two Symbols are the same.
 
 ```
 var privateProp = Symbol();
@@ -229,7 +237,7 @@ With ES6 we get a new function syntax, the Arrow Function! The syntax is as foll
 }
 ```
 
-We no longer need the function keyword here, and we use the `=>` before the `{}` syntax. This will work only for anonymous functions, we can not have a named arrow function.
+We no longer need the function keyword here, and we use the `=>` before the `{}` syntax. This will work only for anonymous functions, you can not have a named arrow function.
 
 If you have a function that will accept a single parameter you can actually leave the parenths out.
 
@@ -246,10 +254,9 @@ var add = (a,b) => {
 ```
 This is great for simple callbacks. You can also leave out the `{}` all together in a simple expression if you want.
 ```
-//explicit return
 var add = (a,b) => a + b;
 ```
-Notice in my explicit return example there is no `{}`, there is a lot more syntax availble for us that you can find [HERE](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). I could write about it, but I will let MDN tell you!
+There is a lot more syntax available for use that you can find [HERE](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). I think MDN can do a better job of explaining some of the nuances.
 
 I do want to go over the lexical scoping of `this` however. When working with functions the `this` keyword and its current context can be confusing for some.
 
@@ -260,6 +267,25 @@ var teacher = {
     location: "Toronto, ON",
     courses: ['Front End bootcamp', 'Intro We Development', 'Advanced Web Development'],
     print: function(){
+        this.courses.forEach(function(course,index) {
+            console.log(`${this.name} teaches ${course}`)
+        });
+    }
+}
+teacher.print();
+//teaches Front End bootcamp
+//teaches Intro We Development
+//teaches Advanced Web Development
+
+```
+In the example above the `this` keyword is scoped to the object we are working on, with the arrow function we can actually change this context. Note that the callback in the `forEach` changes the value of this, it is bound to the `window` object instead! With an Arrow function we can make this behave the way we want!
+
+```
+var teacher = {
+    name: "Ryan",
+    location: "Toronto, ON",
+    courses: ['Front End bootcamp', 'Intro We Development', 'Advanced Web Development'],
+    print: function() {
         this.courses.forEach((course,index) => {
             console.log(`${this.name} teaches ${course}`)
         });
@@ -271,22 +297,9 @@ teacher.print();
 //Ryan teaches Advanced Web Development
 
 ```
-In the example above the `this` keyword is scoped to the object we are working on, with the arrow function we can actually change this context.
+In our `forEach` callback now, the `this` value it bound to the scope in which it was created, so the `teacher` object.
 
-```
-var teacher = {
-    name: "Ryan",
-    location: "Toronto, ON",
-    courses: ['Front End bootcamp', 'Intro We Development', 'Advanced Web Development'],
-    print: () => {
-        this.courses.forEach((course,index) => {
-            console.log(`${this.name} teaches ${course}`)
-        });
-    }
-
-}
-```
-In the above example we have changed the `print` method to be an arrow function as well as the callback for the `forEach`. The `this` keyword would be seen now as the `window`. This is actually going too far. I just wanted to point out an example where the arrow function might not be the most appropriate. Lets look at a slightly more realistic example.
+Lets look at one more example of this so that we can drive the point home.
 
 ```
 class Europe {
@@ -307,7 +320,7 @@ var gob = new Europe();
 gob.finalCountdown();
 ```
 
-Maybe we have a class called `Europe` and we want to play an intro or something...The one problem here is that when you write `setInterval(function(){...});` the `this` keyword is scoped to the window. Or the global scope. So the above will print out `NaN`.
+Maybe we have a class called `Europe` and we want to play an intro or something...the one problem here is that when you write `setInterval(function(){...});` the `this` keyword is scoped to the window. Or the global scope. So the above will print out `NaN`.
 
 However if we change the callback function inside of the `setInterval` call to be an arrow function, the scope of the function will be that in which it was created, therefore the `Europe` class.
 
@@ -331,7 +344,7 @@ This will now print from 1000 to 0!
 
 
 ##Promises 
-In ES6 we get native Promises! A Promise is the eventual success or failure of some action. They are typically used for things like Ajax requests or animations. The idea of a Promise is not new, they have been around for a while. In jQuery we have the `$.Deferred()` object that allows us to emulate the behaviours of a Promise, there are other popular libraries like Q that implemented Promises as well.
+In ES6 we get native Promises! A Promise is the eventual success or failure of some action. They are typically used for things like Ajax requests or animations. The idea of a Promise is not new, they have been around for a while. In jQuery we have the `$.Deferred()` object that allows us to emulate the behaviours of a Promise, there are other popular libraries like [Q](https://github.com/kriskowal/q) that implemented Promises as well.
 
 A Promise can have one of four states, *pending*, *fulfilled*, *rejected*, or *settled*. We will be looking at the *fulfilled* and *rejected* states. 
 
@@ -391,11 +404,11 @@ Promise.all([promise1,promise2]).then(data => {
 });
 ```
 
-The `.all()` method will take an array of promises and called the `.them()` method only once they have all been resolved. If one of the passed promises is rejected, the `.all()` method will reject them all.
+The `.all()` method will take an array of promises and called the `.then()` method only once they have all been resolved. If one of the passed promises is rejected, the `.all()` method will reject them all.
 
 
 ##Using ES6 in your projects today.
-This is great and all, but how can you use this today? In order to use ES6 in your projects now, the safest way to do so is to build it with something like Babel or Traceur. These are transpilers, that take your es6 code and convert it to be es5. 
+This is great and all, but how can you use this today? In order to use ES6 in your projects now, the easiest way to do so is to build it with something like Babel or Traceur. These are transpilers, that take your es6 code and convert it to be es5. This allows us to write with future syntax but allow it to run on current browsers that do not currently support all the features.
 
 ###gulp-babel
 A simple set up would be to use `gulp` and the `gulp-babel` [package](https://www.npmjs.com/package/gulp-babel).
@@ -417,7 +430,8 @@ gulp.task('default', function() {
 });
 
 ```
+###ScratchJS 
+Want to just play around in the browser? I suggest [ScratchJS](https://github.com/richgilbank/Scratch-JS) from Rich Gilbank at Shopify. It is a simple chrome extension that lets you write in the repl and play with the features in the browser.
 
-Want to just try it out in the browser today? I suggest [ScratchJS](https://github.com/richgilbank/Scratch-JS) from Rich Gilbank at Shopify. It is a simple chrome extension that lets you write in the repl and play with the features in the browser.
-
-
+##ES6 Support
+Babel and other transpilers are not able to convert all the features coming, if you need to see if a feature is supported check out this great [compatibility table](https://kangax.github.io/compat-table/es6/).
